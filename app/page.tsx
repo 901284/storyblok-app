@@ -1,18 +1,24 @@
-import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc';
+import { fetchData } from '@/lib/queries';
+import StoryblokStory from '@storyblok/react/story';
+import { notFound } from 'next/navigation';
 
-export default async function Home() {
-  const { data } = await fetchData();
+const Home = async () => {
+  const data = await fetchData('home');
+
+  if (!data) notFound();
 
   return (
     <div>
-      <StoryblokStory story={data.story} />
+      <StoryblokStory story={data?.story} />
     </div>
   );
-}
+};
 
-export async function fetchData() {
+export default Home;
+/* export async function fetchData() {
   let sbParams = { version: 'draft' };
 
   const storyblokApi = getStoryblokApi();
   return storyblokApi.get(`cdn/stories/home`, sbParams as any);
 }
+ */
